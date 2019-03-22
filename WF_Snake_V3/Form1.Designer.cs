@@ -84,7 +84,7 @@
 			this.Controls.Add(this.settingsPanel);
 			this.Controls.Add(this.gameCanvas);
 			this.Name = "Form1";
-			this.Text = "Form1";
+			this.Text = "Snake";
 			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
 			((System.ComponentModel.ISupportInitialize)(this.gameCanvas)).EndInit();
 			this.settingsPanel.ResumeLayout(false);
