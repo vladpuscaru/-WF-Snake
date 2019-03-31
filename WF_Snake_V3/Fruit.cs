@@ -10,11 +10,12 @@ namespace WF_Snake_V3
 	{
 		public int Value { get; set; }
 
-		public Fruit(int maxWidth, int maxHeight, int boxSize)
+		public Fruit(int x, int y, int boxSize)
 		{
+			// TODO: Rethink algorithm.. ATM is not correct!!
 			Value = (new Random()).Next(1, 4); // creates a random value between 1 and 3
-			X = ((new Random()).Next(0, maxWidth / boxSize)) * boxSize;
-			Y = ((new Random()).Next(0, maxHeight / boxSize)) * boxSize;
+			X = (x / boxSize) * boxSize;
+			Y = (y / boxSize) * boxSize;
 			Width = boxSize;
 			Height = boxSize;
 

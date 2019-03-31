@@ -63,8 +63,6 @@ namespace WF_Snake_V3
 		{
 
 			Tail.Add(fruit);
-
-
 			Update();
 
 		}

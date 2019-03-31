@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace WF_Snake_V3
 {
-	public partial class Form1 : Form
+	public partial class Game : Form
 	{
 		#region Game Attribues: snake, fruit
 
@@ -19,7 +19,7 @@ namespace WF_Snake_V3
 
 		#endregion
 
-		public Form1()
+		public Game()
 		{
 			InitializeComponent();
 			StartGame();
@@ -29,10 +29,16 @@ namespace WF_Snake_V3
 
 		private void StartGame()
 		{
+
 			// generare setari default
 			new Settings();
 			gameOverLabel.Visible = false;
 
+			// bari UI
+			StatusLabel.Text = "Game Running | Press 'P' to Pause";
+			SpeedLabel.Text = Settings.Speed.ToString();
+
+			// initializare date
 			snake = new Snake(gameCanvas.Width / 2, gameCanvas.Height / 2, Settings.EntityWidth);
 			GenerateFruit();
 
@@ -42,9 +48,22 @@ namespace WF_Snake_V3
 			gameTimer.Start();
 		}
 
+		private void GamePause()
+		{
+			gameTimer.Stop();
+			StatusLabel.Text = "Game Paused | Press 'P' to Resume";
+		}
+
+		private void GameResume()
+		{
+			gameTimer.Start();
+			StatusLabel.Text = "Game Running | Press 'P' to Pause";
+		}
+
 		private void GenerateFruit()
 		{
-			fruit = new Fruit(gameCanvas.Width, gameCanvas.Height, Settings.EntityWidth);
+			// TODO: Rethink algorithm.. ATM is not correct!!
+			fruit = new Fruit((new Random()).Next(0, gameCanvas.Width), (new Random()).Next(0, gameCanvas.Height), Settings.EntityWidth);
 		}
 
 		private void UpdateScreen(Object sender, EventArgs args)
@@ -59,6 +78,7 @@ namespace WF_Snake_V3
 			{
 				gameTimer.Stop();
 				gameOverLabel.Visible = true;
+				gameOverLabel.BringToFront();
 				gameCanvas.Invalidate();
 			}
 		}
@@ -168,10 +188,13 @@ namespace WF_Snake_V3
 					}
 					break;
 				case Keys.P:
-					gameTimer.Stop();
-					break;
-				case Keys.R:
-					gameTimer.Start();
+					if (gameTimer.Enabled)
+					{
+						GamePause();
+					} else
+					{
+						GameResume();
+					}
 					break;
 				case Keys.Enter:
 					if (Settings.GameOver)
@@ -184,5 +207,42 @@ namespace WF_Snake_V3
 
 		#endregion
 
+		private void SpeedMinus_Click(object sender, EventArgs e)
+		{
+			if (Settings.Speed > 0)
+			{
+				Settings.Speed--;
+			}
+			SpeedLabel.Text = Settings.Speed.ToString();
+		}
+
+		private void SpeedPlus_Click(object sender, EventArgs e)
+		{
+			if (Settings.Speed < 40)
+			{
+				Settings.Speed++;
+			}
+			SpeedLabel.Text = Settings.Speed.ToString();
+		}
+
+		private void SpeedMinus_MouseLeave(object sender, EventArgs e)
+		{
+			SpeedMinus.BackColor = Color.Black;
+		}
+
+		private void SpeedMinus_MouseEnter(object sender, EventArgs e)
+		{
+			SpeedMinus.BackColor = Color.Maroon;
+		}
+
+		private void SpeedPlus_MouseEnter(object sender, EventArgs e)
+		{
+			SpeedPlus.BackColor = Color.Maroon;
+		}
+
+		private void SpeedPlus_MouseLeave(object sender, EventArgs e)
+		{
+			SpeedPlus.BackColor = Color.Black;
+		}
 	}
 }
